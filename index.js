@@ -57,8 +57,8 @@ function showPage(response, pathName){
         case "/":            
             fs.readFile("./views/index.html", (err, data) => {
                 if(err){
-                    // response.writeHead(404);
-                    response.write("Can\'t find the file.");                
+                    response.writeHead(404);
+                    response.end("Can\'t find the file.");                
                     // console.log(err);
                 }
                 else {
