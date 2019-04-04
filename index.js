@@ -3,7 +3,7 @@ var url = require("url");
 var fs  = require("fs");
 var qs = require("querystring");
 var sql = require("mssql");
-var port = process.env.PORT || 1337
+var port = process.env.PORT;
 
 var server = http.createServer((request, response) => {
     // console.log(request.method);
