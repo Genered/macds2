@@ -1,21 +1,59 @@
 var http = require("http");
 var url = require("url");
 var fs  = require("fs");
+var qs = require("querystring");
 var sql = require("mssql");
 var port = process.env.PORT || 1000
 
-var server = http.createServer((req, res) => {
-    console.log(req.url);
-    console.log(url.parse(req.url));
+var server = http.createServer((request, response) => {
+    // console.log(request.method);
+    // console.log(req.url);
+    // console.log(url.parse(req.url));
 
-    var pathName = url.parse(req.url).pathname
-    console.log('pathname' + pathName);
-    showPage(res, pathName);
+    var pathName = url.parse(request.url).pathname
+    // console.log('pathname' + pathName);
+
+    if(request.method == "GET")
+        showPage(response, pathName);
+    else{
+        switch(pathName){
+            case "/":
+                // console.log("Processing...");   
+                parseData(request, response, function(){
+                    // console.log(request.post); 
+                    response.writeHead(200, "OK", {'Content-Type': 'text/plain'});
+                    response.end();
+                });                
+                break;
+        }
+    }
 });
+
+function parseData(request, response, callback){
+    var body = "";    
+
+    request.on('data', function (data) {
+        body += data;        
+        // console.log("Processing body...");  
+        // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB, too much data
+        if (body.length > 1e6) { 
+            // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+            response.writeHead(413, {'Content-Type': 'text/plain'}).end();
+            request.connection.destroy();
+        }
+
+    });
+
+    request.on('end', function () {
+        request.post = qs.parse(body);      
+        // console.log("Parsing the body...");    
+        callback();        
+    });        
+}
 
 function showPage(response, pathName){
     switch(pathName){
-        case "/":
+        case "/":            
             fs.readFile("./views/index.html", (err, data) => {
                 if(err){
                     response.writeHead(404);
@@ -39,51 +77,23 @@ function showPage(response, pathName){
 server.listen(port);
 console.log("Server is running on port %d", port);
 
-// Create a configuration object for our Azure SQL connection parameters
-var dbConfig = {
- server: "zavier-test.database.windows.net", // Use your SQL server name
- database: "AdventureWorks", // Database to connect to
- user: "<your username>", // Use your username
- password: "<your password>", // Use your password
- port: 1433,
- // Since we're on Windows Azure, we need to set the following options
- options: {
-       encrypt: true
-   }
-};
+// // Create a configuration object for our Azure SQL connection parameters
+// var dbConfig = {
+//  server: "daftartugaswebapp.database.windows.net", // Use your SQL server name
+//  database: "daftartugas", // Database to connect to
+//  user: "genered", // Use your username
+//  password: "Burliku1", // Use your password
+//  port: 1433,
+//  // Since we're on Windows Azure, we need to set the following options
+//  options: {
+//        encrypt: true
+//    }
+// };
 
-// This function connects to a SQL server, executes a SELECT statement,
-// and displays the results in the console.
-function getCustomers() {
- // Create connection instance
- var conn = new sql.Connection(dbConfig);
-
- conn.connect()
- // Successfull connection
- .then(function () {
-
-   // Create request instance, passing in connection instance
-   var req = new sql.Request(conn);
-
-   // Call mssql's query method passing in params
-   req.query("SELECT * FROM [SalesLT].[Customer]")
-   .then(function (recordset) {
-     console.log(recordset);
-     conn.close();
-   })
-   // Handle sql statement execution errors
-   .catch(function (err) {
-     console.log(err);
-     conn.close();
-   })
-
- })
- // Handle connection errors
- .catch(function (err) {
-   console.log(err);
-   conn.close();
- });
-}
-
-
-getCustomers();
+// sql.connect(dbConfig).then(conn => {
+//     // console.log(conn);
+//     console.log("Connected!");
+// })
+// .catch(e => {
+//     console.error('connection error', e.message, e.stack)
+// });

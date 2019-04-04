@@ -12,5 +12,8 @@
     "url": ""
   },
   "author": "Imam Satria",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mssql": "^5.0.5"
+  }
 }
