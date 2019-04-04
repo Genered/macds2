@@ -55,19 +55,20 @@ function parseData(request, response, callback){
 function showPage(response, pathName){
     switch(pathName){
         case "/create":            
-            alert(__dirname);
-            fs.readFile(__dirname + "/views/index.html", (err, data) => {
-                if(err){                
-                    response.writeHead(404);
-                    response.end("Can\'t find the file.");                
-                    alert(err);
-                }
-                else {
-                    response.writeHead(200, {"Content-Type" : "text/html"});
-                    response.write(data);
-                    response.end();
-                }
-            });                        
+            // alert(__dirname);
+            response.send("Tes");
+            // fs.readFile(__dirname + "/views/index.html", (err, data) => {
+            //     if(err){                
+            //         response.writeHead(404);
+            //         response.end("Can\'t find the file.");                
+            //         alert(err);
+            //     }
+            //     else {
+            //         response.writeHead(200, {"Content-Type" : "text/html"});
+            //         response.write(data);
+            //         response.end();
+            //     }
+            // });                        
         break;
         default:
             response.writeHead(404);
