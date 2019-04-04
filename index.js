@@ -6,6 +6,7 @@ var sql = require("mssql");
 var port = process.env.PORT;
 
 var server = http.createServer((request, response) => {
+    console.log(__dirname);
     // console.log(request.method);
     // console.log(req.url);
     // console.log(url.parse(req.url));
@@ -53,12 +54,12 @@ function parseData(request, response, callback){
 
 function showPage(response, pathName){
     switch(pathName){
-        case "create":            
+        case "/":            
             fs.readFile("./views/index.html", (err, data) => {
                 if(err){
-                    response.writeHead(404);
-                    response.write('Page not found.');
-                    console.log(err);
+                    // response.writeHead(404);
+                    response.write("Can\'t find the file.");                
+                    // console.log(err);
                 }
                 else {
                     response.writeHead(200, {"Content-Type" : "text/html"});
