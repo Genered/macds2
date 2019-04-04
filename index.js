@@ -70,7 +70,7 @@ function showPage(response, pathName){
         default:
             response.writeHead(404);
             // response.write('Page not found.');
-            response.end("Can\'t find the page you looking for.");
+            response.end("Can\'t find the page you looking for. " + pathName);
             break;
     }    
 }
