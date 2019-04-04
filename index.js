@@ -53,7 +53,7 @@ function parseData(request, response, callback){
 
 function showPage(response, pathName){
     switch(pathName){
-        case "/":            
+        case "/create":            
             fs.readFile("./views/index.html", (err, data) => {
                 if(err){
                     response.writeHead(404);
