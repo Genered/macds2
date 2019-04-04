@@ -55,7 +55,7 @@ function parseData(request, response, callback){
 function showPage(response, pathName){
     switch(pathName){
         case "/create":            
-            fs.readFile("./views/index.html", (err, data) => {
+            fs.readFile(__dirname + "/views/index.html", (err, data) => {
                 if(err){
                     response.writeHead(404);
                     response.end("Can\'t find the file.");                
