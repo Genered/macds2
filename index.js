@@ -3,7 +3,8 @@ var url = require("url");
 var fs  = require("fs");
 var qs = require("querystring");
 var sql = require("mssql");
-var port = process.env.PORT;
+// var port = process.env.PORT;
+var port = process.env.PORT | 1000;
 
 var server = http.createServer((request, response) => {
     console.log(__dirname);
@@ -56,24 +57,24 @@ function showPage(response, pathName){
     switch(pathName){
         case "/create":            
             // alert(__dirname);
-            response.send("Tes");
-            // fs.readFile(__dirname + "/views/index.html", (err, data) => {
-            //     if(err){                
-            //         response.writeHead(404);
-            //         response.end("Can\'t find the file.");                
-            //         alert(err);
-            //     }
-            //     else {
-            //         response.writeHead(200, {"Content-Type" : "text/html"});
-            //         response.write(data);
-            //         response.end();
-            //     }
-            // });                        
+            response.end("Tes");
+            fs.readFile(__dirname + "/views/index.html", null, (err, data) => {
+                if(err){                
+                    response.writeHead(404);
+                    response.write("Can\'t find the file.");
+                    response.end();                
+                }
+                else {
+                    response.writeHead(200, {"Content-Type" : "text/html"});
+                    response.write(data);
+                    response.end();
+                }
+            });                        
         break;
         default:
             response.writeHead(404);
-            // response.write('Page not found.');
-            response.end("Can\'t find the page you looking for. " + pathName);
+            response.write("Can\'t find the page you looking for. " + __dirname + ", " + pathName);
+            response.end();
             break;
     }    
 }
