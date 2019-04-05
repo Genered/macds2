@@ -10,8 +10,8 @@ app.use(bodyParser.urlencoded({extended: false}))
 // var fs  = require("fs");
 // var qs = require("querystring");
 
-// var port = process.env.PORT;
-var port = process.env.PORT | 1000
+var port = process.env.PORT
+// var port = process.env.PORT | 1000
 
 // Create a configuration object for our Azure SQL connection parameters
 var dbConfig = {
