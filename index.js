@@ -57,7 +57,7 @@ function showPage(response, pathName){
     switch(pathName){
         case "/create":            
             // alert(__dirname);
-            response.end("Tes");
+            // response.end("Tes");
             fs.readFile(__dirname + "/views/index.html", null, (err, data) => {
                 if(err){                
                     response.writeHead(404);
