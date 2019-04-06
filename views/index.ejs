@@ -5,8 +5,7 @@
         <title>Daftar Tugas</title>
     </head>
 
-    <body>
-        
+    <body>        
         <div class="container mt-3">     
             <div class="jumbotron">
                 <h1>Add Task</h1>
@@ -23,7 +22,32 @@
 
                     <button type="submit" class="btn btn-primary btn-block">Add Task</button>
                 </form>
-            </div>                  
+            </div>   
+            
+            <div class="jumbotron">
+                <h1 class="mb-5"><strong>Your Task</strong></h1>
+                <div class="row">                    
+                    <div class="col-sm">
+                        <h2><strong>Task</strong></h2>
+                    </div>
+                    <div class="col-sm">
+                        <h2><strong>Deadline</strong></h2>
+                    </div>                                       
+                </div>
+
+                <!-- <% if(todos.length > 0 ) { %>  -->
+                    <% todos.forEach(function (todo) { %>
+                    <div class="row">                    
+                            <div class="col-sm">
+                                <h4><%= todo.task %></h4>
+                            </div>
+                            <div class="col-sm">
+                                <h4><%= todo.deadline %></h4>
+                            </div>                                       
+                    </div>
+                    <% }); %>
+                <!-- <% } %> -->
+            </div>
         </div>        
     </body>
 </html>

@@ -2,14 +2,6 @@ var express     = require("express")
 var bodyParser  = require("body-parser")
 var sql 		= require("mssql");
 var app         = express()
-
-app.set("view engine", "ejs")
-app.use(bodyParser.urlencoded({extended: false}))
-
-// var url = require("url");
-// var fs  = require("fs");
-// var qs = require("querystring");
-
 var port = process.env.PORT
 // var port = process.env.PORT | 1000
 
@@ -26,29 +18,51 @@ var dbConfig = {
       }
    }
 
-app.get('/', function (req, res) {
-    res.render("index")
-});
+app.set("view engine", "ejs")
+app.use(bodyParser.urlencoded({extended: false}))
 
-app.post('/', function (req, res) {
-	sql.connect(dbConfig, function (err) {    
-		if (err) 
+app.get('/', function (req, res) {
+	var todos = [{"task" : "Minum", "deadline" : "13.00"},
+				 {"task" : "Makan", "deadline" : "12.00"}];   				 
+	sql.connect(dbConfig, (err) => {		
+		if(err)
 			console.log(err);
 		else {
-			res.send("Connected!");
-			// create Request object
-			// var request = new sql.Request()
-			
-			// // query to the database and get the records
-			// request.query('select * from Student', function (err, recordset) {			
-			// 	if (err) console.log(err)
-			// 		// send records as a response
-			// 		res.send(recordset)				
-			// });
+			var request = new sql.Request();
+			request.query("select * from todos", (err, record) => {
+				if(err)
+					console.log(err);
+				else {
+					res.render("index", {todos: record.recordset});
+					sql.close();
+					console.log(record.recordset);	
+				}	
+			});		
 		}
-    });
+	});		 
 });
 
-// server.listen(port);
+app.post('/', function (req, res) {				
+	sql.connect(dbConfig, (err) => {		
+		if(err)
+			console.log(err);
+		else {
+			var request = new sql.Request();
+			var query = "insert into todos (task, deadline) values (" + 
+						"'" + req.body.task + "', " +
+						"'" + req.body.deadline + "')";
+			request.query(query, (err, record) => {
+				if(err)
+					console.log(err);
+				else{					
+					res.redirect("/");	
+					sql.close();		
+					console.log(record.recordset);
+				}
+			});			
+		}					
+	});				
+});
+
 app.listen(port)
 console.log("Server is running on port %d", port);
