@@ -5,8 +5,8 @@ var upload      = require("express-fileupload")
 var path		= require("path")
 var app         = express()
 
-// var port = process.env.PORT
-var port = process.env.PORT | 1000
+var port = process.env.PORT
+// var port = process.env.PORT | 1000
 
 app.set("view engine", "ejs")
 app.use(upload())
