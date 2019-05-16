@@ -1,60 +1,56 @@
 <!DOCTYPE html>
 <html>
-    <head>
+    <head>        
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <title>Daftar Tugas</title>
     </head>
 
     <body>        
         <div class="container mt-3">     
-            <div class="jumbotron">
-                <h1>Add Task</h1>
-
-                <form action="/" method="POST">
+            <div class="jumbotron mx-5">
+                <form action="/upload" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
-                            <label for="task">Task:</label>
-                            <input type="text" class="form-control" id="task" name="task">
+                        <label >File to upload</label>
+                        <input type="file" class="form-control" name="upfile" accept="image/*" required>
                     </div>
-                    <div class="form-group">
-                            <label for="deadline">Deadline:</label>
-                            <input type="text" class="form-control" id="deadline" name="deadline">
-                    </div>   
-
-                    <button type="submit" class="btn btn-primary btn-block">Add Task</button>
+                     
+                    <button type="submit" class="btn btn-primary btn-block">Upload</button>
                 </form>
-            </div>   
-            
-            <div class="jumbotron">
-                <h1 class="mb-5"><strong>Your Task</strong></h1>
+            </div>
+
+            <div class="jumbotron mx-5">
+                <h1 class="mb-5"><strong>Blob in container</strong></h1>
                 <div class="row">                    
                     <div class="col-sm">
-                        <h2><strong>Task</strong></h2>
+                        <h2><strong>Name</strong></h2>
                     </div>
                     <div class="col-sm">
-                        <h2><strong>Deadline</strong></h2>
-                    </div>  
+                        <h2><strong>Url</strong></h2>
+                    </div>                                                      
+                </div> 
+               
+                <% data.forEach(function (blob) { %>
+                <div class="row">                    
                     <div class="col-sm">
-                            <h2><strong>Added Date</strong></h2>
-                        </div>                                    
+                        <h4><%= blob.name %></h4>
+                    </div>
+                    <div class="col-sm">
+                        <a href = "https://daftartugaswebapp.blob.core.windows.net/images/<%= blob.name %>">Download</a>
+                    </div>   
                 </div>
-
-                <!-- <% if(todos.length > 0 ) { %>  -->
-                    <% todos.forEach(function (todo) { %>
-                    <div class="row">                    
-                            <div class="col-sm">
-                                <h4><%= todo.task %></h4>
-                            </div>
-                            <div class="col-sm">
-                                <h4><%= todo.deadline %></h4>
-                            </div>   
-                            
-                            <div class="col-sm">
-                                <h4><%= todo.addedDate %></h4>
-                            </div>  
-                    </div>
-                    <% }); %>
-                <!-- <% } %> -->
+                <% }); %>      
             </div>
+
+            <div class="jumbotron mx-5">                
+                <form action="/analyze" method="POST">
+                    <div class="form-group">
+                        <label >Image URL</label>
+                        <input type="text" class="form-control" name="imageurl">
+                    </div>
+                     
+                    <button type="submit" class="btn btn-primary btn-block">Analyze</button>
+                </form>
+            </div>            
         </div>        
     </body>
 </html>
